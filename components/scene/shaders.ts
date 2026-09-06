@@ -10,6 +10,7 @@ export const fragmentShader = /* glsl */ `
   precision highp float;
   varying vec2 vUv;
   uniform float uTime;
+  uniform int uSteps;
   uniform float uAspect;
   uniform float uScroll;
   uniform vec2 uPointer;
@@ -33,23 +34,31 @@ export const fragmentShader = /* glsl */ `
 
   vec4 accretion(vec3 hit) {
     float r = length(hit.xz);
-    // The gas follows differential rotation: faster at the inner edge,
-    // slower farther out. Circular noise coordinates keep the orbit seamless.
-    float angle = atan(hit.z, hit.x) - uTime * 0.19 * pow(3.0 / r, 1.5);
-    vec3 flow = vec3(r * 2.4, cos(angle) * 3.0, sin(angle) * 3.0);
-    float clouds = noise(flow);
-    clouds += noise(flow * 2.07 + 11.0) * 0.5;
-    clouds += noise(flow * 4.13 + 29.0) * 0.25;
-    float wisps = sin(r * 23.0 + clouds * 4.5) * 0.5 + 0.5;
-    float gas = 0.48 + clouds * 0.44 + wisps * 0.18;
-    float inner = smoothstep(2.9, 3.6, r);
-    float outer = 1.0 - smoothstep(7.0, 12.5, r);
-    float heat = pow(3.0 / max(r, 3.0), 1.5);
-    // The approaching half is brighter and warmer, suggesting Doppler beaming.
-    float beaming = 1.0 + 0.38 * sin(angle + uTime * 0.19 * pow(3.0 / r, 1.5));
-    vec3 temperature = mix(vec3(1.0, 0.29, 0.055), vec3(1.0, 0.84, 0.58), heat);
-    float alpha = inner * outer * 0.94;
-    return vec4(temperature * gas * heat * beaming * 2.15, alpha);
+    float worldAngle = atan(hit.z, hit.x);
+    // The inner gas completes an orbit in roughly 30 seconds; the outer gas
+    // trails behind. Prominent spiral lanes make the slow rotation readable.
+    float orbit = uTime * 0.27 * pow(3.0 / r, 1.35);
+    float angle = worldAngle - orbit;
+    vec3 flow = vec3(r * 3.8, cos(angle) * 4.5, sin(angle) * 4.5);
+    float clouds = noise(flow) * 0.58;
+    clouds += noise(flow * 2.03 + 11.0) * 0.28;
+    clouds += noise(flow * 4.11 + 29.0) * 0.14;
+    float stream = sin(r * 18.0 + clouds * 7.0 + sin(angle * 3.0) * 1.6);
+    float filaments = pow(stream * 0.5 + 0.5, 3.0);
+    float spiral = pow(0.5 + 0.5 * sin(angle * 2.0 + r * 1.55), 7.0);
+    float hotKnot = pow(0.5 + 0.5 * cos(angle - r * 0.28), 24.0);
+    hotKnot *= exp(-pow((r - 4.6) / 1.4, 2.0));
+    float gas = 0.15 + clouds * clouds * 1.8 + filaments * 0.75;
+    gas += spiral * 0.5 + hotKnot * 1.7;
+    float inner = smoothstep(2.9, 3.5, r);
+    float outer = 1.0 - smoothstep(7.3, 12.5, r);
+    float heat = pow(3.0 / max(r, 3.0), 1.35);
+    // Beaming is fixed in world space; the luminous gas knots move through it.
+    float beaming = 1.0 + 0.48 * sin(worldAngle);
+    vec3 temperature = mix(vec3(1.0, 0.18, 0.025), vec3(1.0, 0.72, 0.35), heat);
+    temperature = mix(temperature, vec3(1.0, 0.91, 0.72), clamp(hotKnot * 0.4 + filaments * heat * 0.3, 0.0, 0.8));
+    float alpha = inner * outer * 0.96;
+    return vec4(temperature * gas * heat * beaming * 3.15, alpha);
   }
 
   vec3 stars(vec3 direction) {
@@ -67,15 +76,15 @@ export const fragmentShader = /* glsl */ `
     // A slow orbital camera makes the disk breathe in perspective rather than
     // rotating the entire image like a flat graphic.
     float azimuth = uTime * 0.016 + uPointer.x * 0.07;
-    float elevation = 0.19 + sin(uTime * 0.045) * 0.035 + uPointer.y * 0.025;
-    float distanceToHole = 18.5 + uScroll * 0.65;
+    float elevation = 0.25 + sin(uTime * 0.075) * 0.065 + uPointer.y * 0.045;
+    float distanceToHole = 15.2 + uScroll * 0.65;
     vec3 origin = vec3(sin(azimuth) * cos(elevation), sin(elevation), cos(azimuth) * cos(elevation)) * distanceToHole;
     vec3 forward = normalize(-origin);
     vec3 right = normalize(cross(forward, vec3(0,1,0)));
     vec3 up = cross(right, forward);
-    float roll = -0.11 + sin(uTime * 0.028) * 0.025;
+    float roll = -0.16 + sin(uTime * 0.055) * 0.045;
     p = mat2(cos(roll), -sin(roll), sin(roll), cos(roll)) * p;
-    vec3 direction = normalize(forward * 1.95 + right * p.x + up * p.y);
+    vec3 direction = normalize(forward * 2.12 + right * p.x + up * p.y);
     vec3 position = origin;
     vec3 velocity = direction;
     vec3 color = vec3(0.0);
@@ -92,7 +101,7 @@ export const fragmentShader = /* glsl */ `
     bool captured = false;
     float traveled = 0.0;
 
-    for (int i = 0; i < 88; i++) {
+    for (int i = 0; i < uSteps; i++) {
       float r = length(position);
       if (r < 1.015) { captured = true; break; }
       if (r > 26.0 || traveled > 80.0) break;
@@ -121,10 +130,10 @@ export const fragmentShader = /* glsl */ `
       // A thin atmosphere of hot gas adds a soft volumetric glow around the
       // disk, instead of a hard, uniformly illuminated torus.
       float radial = length(position.xz);
-      float dust = exp(-abs(position.y) * 3.2)
+      float dust = exp(-abs(position.y) * 2.3)
         * exp(-max(radial - 3.0, 0.0) * 0.48)
         * smoothstep(2.7, 3.5, radial);
-      color += vec3(1.0, 0.37, 0.095) * dust * stepSize * transmission * 0.065;
+      color += vec3(1.0, 0.37, 0.095) * dust * stepSize * transmission * 0.11;
       position = next;
       traveled += stepSize;
       if (transmission < 0.025) break;
@@ -133,6 +142,12 @@ export const fragmentShader = /* glsl */ `
     // Captured rays terminate at an opaque, completely dark event horizon.
     // Escaping rays sample the stars using their bent outgoing direction.
     if (!captured) color += stars(normalize(velocity)) * transmission;
+    // A narrow golden photon ring gives the shadow a crisp edge, with a
+    // broader, dimmer halo suggesting light lingering near the critical orbit.
+    float impact = sqrt(angularMomentumSq);
+    float photonRing = exp(-abs(impact - 2.598) * 32.0);
+    float photonHalo = exp(-abs(impact - 2.598) * 5.5);
+    color += vec3(1.0, 0.60, 0.22) * (photonRing * 0.8 + photonHalo * 0.055);
     color = vec3(1.0) - exp(-color * 1.3);
     color = pow(color, vec3(0.92));
     float fade = smoothstep(0.0, 0.16, vUv.y) * smoothstep(0.0, 0.16, 1.0 - vUv.y);

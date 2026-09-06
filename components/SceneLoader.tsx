@@ -4,6 +4,12 @@ import useMotionPreference from "./useMotionPreference";
 import dynamic from "next/dynamic";
 import { Component, useCallback, useState, type ReactNode } from "react";
 
+// Start fetching the scene when this client module arrives, so selective
+// hydration cannot leave the visual waiting behind a deferred boundary.
+if (typeof window !== "undefined") {
+  void import("./BlackHoleScene").catch(() => undefined);
+}
+
 const BlackHoleScene = dynamic(() => import("./BlackHoleScene"), {
   ssr: false,
   loading: () => null,

@@ -1,7 +1,9 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { AdaptiveDpr, PerformanceMonitor, Stars } from "@react-three/drei";
+import { AdaptiveDpr } from "@react-three/drei/core/AdaptiveDpr";
+import { PerformanceMonitor } from "@react-three/drei/core/PerformanceMonitor";
+import { Stars } from "@react-three/drei/core/Stars";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./scene/shaders";
@@ -13,6 +15,7 @@ function Singularity({ reducedMotion }: { reducedMotion: boolean }) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
+      uSteps: { value: 72 },
       uAspect: { value: 1 },
       uScroll: { value: 0 },
       uPointer: { value: new THREE.Vector2() },
@@ -41,7 +44,9 @@ function Singularity({ reducedMotion }: { reducedMotion: boolean }) {
   useFrame((state, delta) => {
     if (!material.current) return;
     const u = material.current.uniforms;
-    if (!reducedMotion) u.uTime.value += Math.min(delta, 0.05);
+    // Keep orbital speed consistent even on a slower GPU. Ignore long gaps
+    // when the tab or offscreen canvas resumes.
+    if (!reducedMotion && delta < 1) u.uTime.value += delta;
     u.uAspect.value = viewport.width / viewport.height;
     const damping = 1 - Math.exp(-delta * 2);
     u.uPointer.value.x = THREE.MathUtils.lerp(
@@ -81,13 +86,6 @@ function Singularity({ reducedMotion }: { reducedMotion: boolean }) {
       />
     </mesh>
   );
-}
-
-function WebGLFallback({ onFailure }: { onFailure: () => void }) {
-  useEffect(() => {
-    onFailure();
-  }, [onFailure]);
-  return null;
 }
 
 export default function BlackHoleScene({
@@ -141,7 +139,7 @@ export default function BlackHoleScene({
           });
           onReady();
         }}
-        fallback={<WebGLFallback onFailure={onFailure} />}
+        fallback={<span>Your browser does not support the animated observation.</span>}
       >
         <Stars
           radius={35}
