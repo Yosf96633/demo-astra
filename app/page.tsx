@@ -1,16 +1,18 @@
-import Hero from "@/components/Hero";
-import About from "@/components/About";
+import CosmicExperience from "@/components/CosmicExperience";
+import SmoothScroll from "@/components/SmoothScroll";
+import Starfield from "@/components/Starfield";
 import Features from "@/components/Features";
 import CTA from "@/components/CTA";
 
 export default function Home() {
   return (
-    <main>
+    <main className="landing-page">
+      <SmoothScroll />
+      <Starfield />
       <a className="skip-link" href="#concept">
         Skip to content
       </a>
-      <Hero />
-      <About />
+      <CosmicExperience />
       <Features />
       <CTA />
     </main>

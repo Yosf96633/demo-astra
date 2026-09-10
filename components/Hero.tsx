@@ -1,6 +1,5 @@
 "use client";
 import useMotionPreference from "./useMotionPreference";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowDown,
@@ -11,16 +10,18 @@ import {
   Plus,
 } from "lucide-react";
 import Navigation from "./Navigation";
-import SceneLoader from "./SceneLoader";
 
-export default function Hero() {
+export default function Hero({
+  paused,
+  onToggleMotion,
+}: {
+  paused: boolean;
+  onToggleMotion: () => void;
+}) {
   const reduced = useMotionPreference();
-  const [paused, setPaused] = useState(false);
   return (
     <section id="home" className="hero">
       <Navigation />
-      <div className="hero-stars" aria-hidden="true" />
-      <SceneLoader paused={paused} />
       <div className="hero-intro relative z-10 text-center">
         <motion.div
           className="eyebrow hero-eyebrow"
@@ -84,7 +85,7 @@ export default function Hero() {
         </div>
         <button
           className="motion-toggle"
-          onClick={() => setPaused(!paused)}
+          onClick={onToggleMotion}
           aria-label={paused ? "Play scene animation" : "Pause scene animation"}
           aria-pressed={paused}
         >

@@ -41,7 +41,7 @@ export default function SceneLoader({ paused }: { paused: boolean }) {
     <div
       className="black-hole-scene"
       role="img"
-      aria-label="An animated black hole with a golden accretion disk and gravitationally distorted starlight"
+      aria-label="An animated black hole with a white-hot accretion disk, spectral color fringes, and gravitationally distorted starlight"
     >
       <div
         className={`scene-poster ${ready && !failed ? "scene-poster-hidden" : ""}`}

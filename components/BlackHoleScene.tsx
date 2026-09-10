@@ -7,6 +7,7 @@ import { Stars } from "@react-three/drei/core/Stars";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { fragmentShader, vertexShader } from "./scene/shaders";
+import SpectralOptics from "./scene/SpectralOptics";
 
 function Singularity({ reducedMotion }: { reducedMotion: boolean }) {
   const material = useRef<THREE.ShaderMaterial>(null);
@@ -125,13 +126,20 @@ export default function BlackHoleScene({
     };
   }, []);
 
+  // Layout measurements avoid scaling the canvas buffer twice as its parent
+  // travels into the observation window.
   return (
     <div ref={wrapper} className="h-full w-full" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={lowPower ? 0.8 : [1, 1.25]}
+        resize={{ scroll: false, offsetSize: true }}
         frameloop={visible && !reducedMotion ? "always" : "demand"}
-        gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
+        gl={{
+          alpha: true,
+          antialias: false,
+          powerPreference: "high-performance",
+        }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x08090b, 0);
           gl.domElement.addEventListener("webglcontextlost", onFailure, {
@@ -139,7 +147,9 @@ export default function BlackHoleScene({
           });
           onReady();
         }}
-        fallback={<span>Your browser does not support the animated observation.</span>}
+        fallback={
+          <span>Your browser does not support the animated observation.</span>
+        }
       >
         <Stars
           radius={35}
@@ -157,6 +167,7 @@ export default function BlackHoleScene({
           flipflops={1}
         />
         <AdaptiveDpr />
+        <SpectralOptics lowPower={lowPower} />
       </Canvas>
     </div>
   );
