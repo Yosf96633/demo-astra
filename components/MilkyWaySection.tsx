@@ -64,8 +64,8 @@ export default function MilkyWaySection() {
         <span className="eyebrow">
           <span className="status-light" /> A SMALL PART OF SOMETHING INFINITE
         </span>
-        <a href="#transmission" className="observation-link">
-          STAY IN ORBIT <ArrowUpRight size={17} />
+        <a href="#neutron-star" className="observation-link">
+          FOLLOW THE SIGNAL <ArrowUpRight size={17} />
         </a>
       </Reveal>
     </section>

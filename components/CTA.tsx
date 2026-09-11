@@ -59,7 +59,7 @@ export default function CTA() {
       </div>
       <Reveal className="cta-content relative z-10 mx-auto text-center">
         <div className="eyebrow section-label justify-center">
-          <span className="status-light" /> 05 / THE NEXT FRONTIER
+          <span className="status-light" /> 06 / THE NEXT FRONTIER
         </div>
         <h2>
           The universe is calling.

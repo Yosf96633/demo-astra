@@ -148,7 +148,7 @@ button {
 }
 .desktop-nav {
   display: flex;
-  gap: 35px;
+  gap: clamp(15px, 2vw, 30px);
   margin-left: 15px;
 }
 .desktop-nav a {
@@ -1386,6 +1386,9 @@ h2 span {
   background-image: url("/galaxy-poster.png");
   background-size: 100% 100%;
 }
+.neutron-visual .deep-space-poster {
+  background-image: url("/neutron-star-poster.png");
+}
 .nebula-shade {
   position: absolute;
   inset: 0;
@@ -1632,7 +1635,7 @@ h2 span {
   line-height: 1.12;
 }
 .galaxy-heading h2 span {
-  color: #aaa9b2;
+  color: #b8ad9e;
 }
 .galaxy-heading p {
   color: #989ba8;
@@ -1647,10 +1650,14 @@ h2 span {
 }
 .galaxy-visual {
   mask-image: radial-gradient(
-    ellipse 66% 65% at center,
-    #000 48%,
-    transparent 80%
+    ellipse 75% 85% at center,
+    #000 60%,
+    transparent 100%
   );
+}
+.galaxy-visual .cosmic-dust i {
+  background: #fff1cf;
+  box-shadow: 0 0 5px #f5bc6570;
 }
 .galaxy-visual .cosmic-dust i:nth-child(9n) {
   width: 3px;
@@ -1866,5 +1873,145 @@ h2 span {
   }
   .meteor-field {
     display: none;
+  }
+}
+
+/* The last observation: a violet magnetic field against a quiet starfield. */
+.neutron-section {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+  padding-block: 95px 55px;
+  border-block: 1px solid #ffffff0c;
+  background: radial-gradient(ellipse at 50% 57%, #19102b70, transparent 65%);
+}
+.neutron-heading {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.neutron-heading .eyebrow {
+  justify-content: center;
+  color: #b8a5d1;
+}
+.neutron-heading .status-light {
+  background: #c7a3ff;
+  box-shadow: 0 0 12px #b57eff88;
+}
+.neutron-heading h2 {
+  font-size: clamp(40px, 4.5vw, 66px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -2.5px;
+}
+.neutron-heading h2 span {
+  color: #b5a5c9;
+}
+.neutron-heading p {
+  color: #a5a0af;
+  font-size: 14px;
+  line-height: 1.85;
+  margin-top: 24px;
+}
+.neutron-observation {
+  position: relative;
+  height: clamp(570px, 53vw, 820px);
+  max-width: 1800px;
+  margin: -20px auto 0;
+}
+.neutron-visual {
+  mask-image: radial-gradient(
+    ellipse 70% 65% at center,
+    #000 48%,
+    transparent 95%
+  );
+}
+.neutron-visual .cosmic-dust i {
+  background: #dce6ff;
+  box-shadow: 0 0 6px #a99dff80;
+}
+.neutron-coordinate {
+  position: absolute;
+  left: max(56px, calc((100vw - 1328px) / 2));
+  top: 48%;
+  display: block;
+  color: #c1b3d0;
+  font-size: 8px;
+  line-height: 2.6;
+}
+.neutron-coordinate span {
+  display: block;
+  font-size: 7px;
+  color: #8e809f;
+}
+.neutron-signal {
+  position: absolute;
+  right: max(56px, calc((100vw - 1328px) / 2));
+  top: 49%;
+  color: #b5a8d4;
+  font-size: 7px;
+  letter-spacing: 1.3px;
+}
+.neutron-bottom {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding-top: 25px;
+  border-top: 1px solid #c9a0ff17;
+}
+.neutron-bottom .observation-link {
+  font-size: 9px;
+}
+.neutron-bottom .observation-motion {
+  border-color: #c9a0ff30;
+}
+@media (min-width: 768px) and (max-width: 1250px) {
+  .navigation .nav-cta {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .neutron-section {
+    padding-block: 70px 40px;
+  }
+  .neutron-heading h2 {
+    font-size: 39px;
+    letter-spacing: -1.7px;
+  }
+  .neutron-heading p {
+    font-size: 12px;
+    max-width: 310px;
+    margin-inline: auto;
+  }
+  .neutron-observation {
+    height: 510px;
+    margin-top: 10px;
+  }
+  .neutron-visual {
+    inset: 0 -8%;
+  }
+  .neutron-coordinate {
+    left: 20px;
+    top: 8px;
+    font-size: 7px;
+  }
+  .neutron-coordinate span {
+    font-size: 6px;
+  }
+  .neutron-signal {
+    right: 22px;
+    top: auto;
+    bottom: 20px;
+    font-size: 6px;
+  }
+  .neutron-bottom {
+    gap: 15px;
+  }
+  .neutron-bottom .observation-link {
+    font-size: 7px;
+    letter-spacing: 0.7px;
+    gap: 8px;
   }
 }

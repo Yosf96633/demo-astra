@@ -22,6 +22,7 @@ export default function Navigation() {
         <a href="#discover">Discover</a>
         <a href="#nebula">Nebula</a>
         <a href="#milky-way">Milky Way</a>
+        <a href="#neutron-star">Neutron star</a>
         <a href="#transmission">
           Stay in orbit <ArrowUpRight size={13} />
         </a>
@@ -49,6 +50,7 @@ export default function Navigation() {
             ["Discover", "discover"],
             ["Nebula", "nebula"],
             ["Milky Way", "milky-way"],
+            ["Neutron star", "neutron-star"],
             ["Stay in orbit", "transmission"],
           ].map(([title, id]) => (
             <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>

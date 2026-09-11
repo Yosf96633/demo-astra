@@ -9,8 +9,10 @@ import {
   nebulaShader,
   screenVertexShader,
 } from "./deep-space-shaders";
+import { neutronStarShader } from "./neutron-star-shaders";
+import NeutronStarField from "./NeutronStarField";
 
-type Kind = "nebula" | "galaxy";
+type Kind = "nebula" | "galaxy" | "neutron";
 
 function Observation({
   kind,
@@ -60,7 +62,13 @@ function Observation({
         ref={material}
         uniforms={uniforms}
         vertexShader={screenVertexShader}
-        fragmentShader={kind === "nebula" ? nebulaShader : galaxyShader}
+        fragmentShader={
+          kind === "nebula"
+            ? nebulaShader
+            : kind === "neutron"
+              ? neutronStarShader
+              : galaxyShader
+        }
         depthTest={false}
         depthWrite={false}
         toneMapped={false}
@@ -109,7 +117,10 @@ export default function DeepSpaceScene({
         {kind === "nebula" ? (
           <Nebula running={running} />
         ) : (
-          <Observation kind="galaxy" running={running} />
+          <Observation kind={kind} running={running} />
+        )}
+        {kind === "neutron" && (
+          <NeutronStarField running={running} lowPower={lowPower} />
         )}
       </Suspense>
     </Canvas>

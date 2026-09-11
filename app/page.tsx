@@ -5,6 +5,7 @@ import Features from "@/components/Features";
 import CTA from "@/components/CTA";
 import NebulaSection from "@/components/NebulaSection";
 import MilkyWaySection from "@/components/MilkyWaySection";
+import NeutronStarSection from "@/components/NeutronStarSection";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Features />
       <NebulaSection />
       <MilkyWaySection />
+      <NeutronStarSection />
       <CTA />
     </main>
   );

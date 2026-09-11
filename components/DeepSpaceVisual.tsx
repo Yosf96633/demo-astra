@@ -32,7 +32,7 @@ export default function DeepSpaceVisual({
   kind,
   paused,
 }: {
-  kind: "nebula" | "galaxy";
+  kind: "nebula" | "galaxy" | "neutron";
   paused: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
