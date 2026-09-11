@@ -49,17 +49,18 @@ export const fragmentShader = /* glsl */ `
     float thread = pow(0.5 + 0.5 * sin(phase), 3.0);
     // Outer filaments merge softly into light instead of ending in hard rings.
     thread = mix(thread, 0.45, smoothstep(5.0, 9.0, r));
-    float flowDensity = 0.65 + 0.35 * sin(angle * 3.0 + r * 0.8);
+    float flowDensity = 0.88 + 0.12 * sin(angle * 4.0 + r * 0.8);
     float gas = (0.12 + thread * 0.95 + clouds * 0.28) * flowDensity;
     float inner = smoothstep(2.95, 3.24, r);
     float outer = 1.0 - smoothstep(6.0, 10.7, r);
     float heat = pow(3.0 / max(r, 3.0), 1.4);
 
-    // Brightness is deliberately asymmetric: the right side blooms white,
-    // while the left and outer edge retain the reference's spectral ribbons.
+    // Equal lighting at both projected ends keeps the disk visually balanced.
+    // Squaring the camera-relative cosine preserves the same emission envelope
+    // on either side, while the smaller gas details continue to orbit.
     float cameraAngle = uTime * 0.009;
-    float approaching = 0.5 + 0.5 * cos(worldAngle + cameraAngle);
-    float beaming = 0.35 + 3.1 * pow(approaching, 1.8);
+    float limb = pow(cos(worldAngle + cameraAngle), 2.0);
+    float beaming = 1.55 + 0.35 * limb;
     // The primary light is white, as in the reference. Spectral color comes
     // from edge dispersion in the optical pass, not painted rainbow bands.
     vec3 light = mix(vec3(0.67, 0.84, 1.0), vec3(1.0), smoothstep(0.3, 0.9, heat));
@@ -67,14 +68,13 @@ export const fragmentShader = /* glsl */ `
     vec3 emission = light * gas * heat * beaming * 2.6 * (0.7 + grain * 0.65);
     float whiteRim = 1.0 - smoothstep(3.7, 4.8, r);
     emission += vec3(0.96, 0.99, 1.0) * whiteRim * 1.65;
-    float glare = pow(approaching, 7.0) * exp(-pow((r - 5.8) / 2.0, 2.0));
-    emission += vec3(0.90, 0.98, 1.0) * glare * 3.2;
+    float glare = pow(limb, 3.5) * exp(-pow((r - 5.8) / 2.0, 2.0));
+    emission += vec3(0.90, 0.98, 1.0) * glare * 2.4;
 
-    // A small amber knot travels around the outer gas, like the warm flare
-    // on the left of the supplied image. The rest of the disk stays white.
-    float knot = pow(0.5 + 0.5 * cos(angle - 2.85), 36.0);
+    // Paired warm highlights avoid a single flare extending one apparent edge.
+    float knot = pow(limb, 12.0);
     knot *= exp(-pow((r - 7.3) / 0.9, 2.0));
-    emission += vec3(1.0, 0.40, 0.015) * knot * 7.0;
+    emission += vec3(1.0, 0.40, 0.015) * knot * 2.2;
     return vec4(emission, inner * outer * 0.985);
   }
 
@@ -100,7 +100,9 @@ export const fragmentShader = /* glsl */ `
     vec3 forward = normalize(-origin);
     vec3 right = normalize(cross(forward, vec3(0,1,0)));
     vec3 up = cross(right, forward);
-    float roll = -0.235 + sin(uTime * 0.025) * 0.008;
+    // Keep the horizontal diameter level; camera parallax must not lower one
+    // end of the disk. Orbital gas motion is independent of camera roll.
+    float roll = 0.0;
     p = mat2(cos(roll), -sin(roll), sin(roll), cos(roll)) * p;
     vec3 direction = normalize(forward * 1.95 + right * p.x + up * p.y);
     vec3 position = origin;
@@ -223,7 +225,6 @@ export const opticsShader = /* glsl */ `
       float angle = float(i) * 2.39996;
       float spread = 6.0 + float(i) * 2.0;
       vec2 offset = vec2(cos(angle) * 1.7, sin(angle) * 0.7) * spread;
-      offset = mat2(0.973, -0.230, 0.230, 0.973) * offset;
       glow += highlight(vUv + offset * pixel);
     }
     glow /= uLowPower > 0.5 ? 6.0 : 12.0;

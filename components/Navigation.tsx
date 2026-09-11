@@ -20,6 +20,8 @@ export default function Navigation() {
       <nav className="desktop-nav" aria-label="Main navigation">
         <a href="#concept">The concept</a>
         <a href="#discover">Discover</a>
+        <a href="#nebula">Nebula</a>
+        <a href="#milky-way">Milky Way</a>
         <a href="#transmission">
           Stay in orbit <ArrowUpRight size={13} />
         </a>
@@ -45,6 +47,8 @@ export default function Navigation() {
           {[
             ["The concept", "concept"],
             ["Discover", "discover"],
+            ["Nebula", "nebula"],
+            ["Milky Way", "milky-way"],
             ["Stay in orbit", "transmission"],
           ].map(([title, id]) => (
             <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>

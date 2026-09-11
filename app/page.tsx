@@ -3,6 +3,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Starfield from "@/components/Starfield";
 import Features from "@/components/Features";
 import CTA from "@/components/CTA";
+import NebulaSection from "@/components/NebulaSection";
+import MilkyWaySection from "@/components/MilkyWaySection";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       </a>
       <CosmicExperience />
       <Features />
+      <NebulaSection />
+      <MilkyWaySection />
       <CTA />
     </main>
   );

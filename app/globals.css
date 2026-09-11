@@ -1347,3 +1347,524 @@ h2 span {
     background: url("/black-hole-poster.png") center / contain no-repeat;
   }
 }
+
+/* Two quiet observations continue the same journey beyond the black hole. */
+.nebula-section {
+  position: relative;
+  min-height: 880px;
+  height: min(105svh, 1100px);
+  overflow: clip;
+  isolation: isolate;
+  background: #080b0f;
+  border-block: 1px solid #ffffff0c;
+}
+.nebula-observation {
+  position: absolute;
+  inset: 0 0 0 23%;
+  mask-image: linear-gradient(90deg, transparent, #000 16%);
+}
+.deep-space-visual,
+.deep-space-poster,
+.deep-space-canvas,
+.cosmic-dust,
+.meteor-field {
+  position: absolute;
+  inset: 0;
+}
+.deep-space-visual {
+  overflow: hidden;
+}
+.deep-space-poster {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.nebula-visual .deep-space-poster {
+  background-image: url("/nebula-pillars.webp");
+}
+.galaxy-visual .deep-space-poster {
+  background-image: url("/galaxy-poster.png");
+  background-size: 100% 100%;
+}
+.nebula-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      #080b0f 4%,
+      #080b0ff5 23%,
+      #080b0faf 36%,
+      #080b0f0a 65%
+    ),
+    linear-gradient(
+      0deg,
+      #080b0f 0%,
+      transparent 21%,
+      transparent 85%,
+      #080b0f8a
+    );
+}
+.nebula-layout {
+  position: relative;
+  min-height: inherit;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.nebula-copy {
+  max-width: 570px;
+  padding-bottom: 70px;
+}
+.nebula-copy h2 {
+  font-size: clamp(48px, 5.3vw, 78px);
+  line-height: 1.05;
+  letter-spacing: -3.5px;
+  font-weight: 400;
+}
+.nebula-copy h2 em {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  color: #a6ced6;
+}
+.nebula-copy p {
+  color: #b2b8be;
+  font-size: 15px;
+  line-height: 1.85;
+  max-width: 340px;
+  margin: 28px 0 38px;
+}
+.nebula-copy .status-light {
+  background: #a6ced6;
+}
+.observation-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  color: #deded9;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ffffff33;
+  pointer-events: auto;
+}
+.observation-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.nebula-coordinate {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  color: #e1dbd3b3;
+}
+.nebula-coordinate > span {
+  height: 1px;
+  width: 35px;
+  background: #e1dbd34d;
+}
+.observation-bottom {
+  position: absolute;
+  bottom: 66px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.observation-caption {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  line-height: 2;
+  letter-spacing: 1.7px;
+  color: #e3dad0;
+}
+.observation-caption small {
+  font-size: 8px;
+  color: #9fa5ad;
+  letter-spacing: 1.3px;
+}
+.observation-motion {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ffffff24;
+  border-radius: 30px;
+  padding: 13px 18px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #d7d8dc;
+  background: #080b0f80;
+  pointer-events: auto;
+}
+.observation-motion:hover {
+  border-color: #ffffff66;
+  background: #18222ad9;
+}
+.observation-motion:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+.nebula-credit {
+  position: absolute;
+  bottom: 19px;
+  left: 24px;
+  right: 24px;
+  text-align: right;
+  font-size: 10px;
+  color: #a6adb3;
+  line-height: 1.6;
+}
+.nebula-credit a:hover {
+  color: #fff;
+}
+.cosmic-dust,
+.meteor-field {
+  pointer-events: none;
+}
+.cosmic-dust i {
+  position: absolute;
+  width: var(--dust-size);
+  height: var(--dust-size);
+  background: #e4eef8;
+  box-shadow: 0 0 5px #d6eaff70;
+  border-radius: 50%;
+  animation: cosmic-drift var(--dust-duration) var(--dust-delay) ease-in-out
+    infinite alternate;
+}
+.cosmic-dust i:nth-child(4n) {
+  background: #fbd3a0;
+}
+@keyframes cosmic-drift {
+  0% {
+    transform: translate3d(-12px, 18px, 0);
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(22px, -28px, 0);
+    opacity: 0.24;
+  }
+}
+.meteor-field i {
+  position: absolute;
+  left: 18%;
+  top: 16%;
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #dcefff);
+  filter: drop-shadow(0 0 3px #dcefff);
+  opacity: 0;
+  animation: nebula-meteor 14s linear infinite;
+}
+.meteor-field i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -1px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px #b6ddff;
+}
+.meteor-field i:nth-child(2) {
+  left: 62%;
+  top: 8%;
+  width: 90px;
+  animation-duration: 19s;
+  animation-delay: -8s;
+}
+.meteor-field i:nth-child(3) {
+  left: 35%;
+  top: 52%;
+  animation-duration: 23s;
+  animation-delay: -15s;
+}
+@keyframes nebula-meteor {
+  0%,
+  84% {
+    opacity: 0;
+    transform: translate3d(-120px, -60px, 0) rotate(27deg) scaleX(0.4);
+  }
+  86% {
+    opacity: 0.8;
+  }
+  91% {
+    opacity: 0;
+    transform: translate3d(350px, 180px, 0) rotate(27deg) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(350px, 180px, 0) rotate(27deg);
+  }
+}
+.deep-space-visual[data-running="false"] .cosmic-dust i,
+.deep-space-visual[data-running="false"] .meteor-field i {
+  animation-play-state: paused;
+}
+.galaxy-section {
+  padding-top: 110px;
+  padding-bottom: 65px;
+}
+.galaxy-heading {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.galaxy-heading .eyebrow {
+  justify-content: center;
+}
+.galaxy-heading h2 {
+  font-size: clamp(38px, 4.3vw, 64px);
+  font-weight: 400;
+  letter-spacing: -2.5px;
+  line-height: 1.12;
+}
+.galaxy-heading h2 span {
+  color: #aaa9b2;
+}
+.galaxy-heading p {
+  color: #989ba8;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 23px;
+}
+.galaxy-observation {
+  position: relative;
+  height: clamp(500px, 51vw, 720px);
+  margin-top: -20px;
+}
+.galaxy-visual {
+  mask-image: radial-gradient(
+    ellipse 66% 65% at center,
+    #000 48%,
+    transparent 80%
+  );
+}
+.galaxy-visual .cosmic-dust i:nth-child(9n) {
+  width: 3px;
+  height: 3px;
+  background: #fff8e9;
+  box-shadow: 0 0 9px 2px #fff2ce80;
+}
+.galaxy-visual .cosmic-dust i:nth-child(9n)::before,
+.galaxy-visual .cosmic-dust i:nth-child(9n)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 21px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, transparent, #fff8e9, transparent);
+}
+.galaxy-visual .cosmic-dust i:nth-child(9n)::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.galaxy-coordinate {
+  position: absolute;
+  top: 44%;
+  left: 0;
+  display: block;
+  color: #c1c1c9;
+  line-height: 2.6;
+  font-size: 8px;
+}
+.galaxy-coordinate span {
+  display: block;
+  font-size: 7px;
+  color: #7b8190;
+}
+.galaxy-reticle {
+  position: absolute;
+  color: #b5a18b;
+  font-weight: 300;
+  font-size: 20px;
+  top: 49%;
+}
+.galaxy-reticle-left {
+  left: 18%;
+}
+.galaxy-reticle-right {
+  right: 6%;
+}
+.galaxy-motion {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.galaxy-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding-top: 35px;
+  margin-top: 35px;
+  border-top: 1px solid #ffffff12;
+  color: #aba7a3;
+}
+.galaxy-note .eyebrow {
+  font-size: 8px;
+}
+@media (min-width: 768px) and (max-width: 1100px) {
+  .desktop-nav {
+    gap: 18px;
+  }
+  .navigation .nav-cta {
+    display: none;
+  }
+  .nebula-copy {
+    max-width: 440px;
+  }
+  .nebula-observation {
+    left: 10%;
+  }
+  .nebula-copy h2 {
+    font-size: 58px;
+  }
+}
+@media (max-width: 767px) {
+  .nebula-section {
+    height: auto;
+    min-height: 1040px;
+  }
+  .nebula-observation {
+    inset: 290px -12% 35px;
+    mask-image: linear-gradient(
+      180deg,
+      transparent,
+      #000 13%,
+      #000 84%,
+      transparent
+    );
+  }
+  .nebula-shade {
+    background: linear-gradient(
+      180deg,
+      #080b0f 22%,
+      #080b0f9c 35%,
+      transparent 52%,
+      transparent 75%,
+      #080b0f 95%
+    );
+  }
+  .nebula-layout {
+    display: block;
+    padding-top: 65px;
+  }
+  .nebula-copy {
+    max-width: 100%;
+    padding-bottom: 0;
+  }
+  .nebula-copy h2 {
+    font-size: 50px;
+    letter-spacing: -2px;
+  }
+  .nebula-copy p {
+    font-size: 13px;
+    margin: 21px 0 22px;
+    max-width: 310px;
+  }
+  .nebula-copy .eyebrow {
+    font-size: 7px;
+  }
+  .observation-link {
+    font-size: 9px;
+    gap: 18px;
+  }
+  .nebula-coordinate {
+    top: 535px;
+    font-size: 7px;
+  }
+  .observation-bottom {
+    bottom: 95px;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .observation-caption {
+    font-size: 8px;
+    gap: 8px;
+    letter-spacing: 1px;
+  }
+  .observation-caption small {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .observation-motion {
+    font-size: 7px;
+    gap: 7px;
+    padding: 11px 12px;
+  }
+  .nebula-credit {
+    text-align: left;
+    bottom: 22px;
+    font-size: 9px;
+  }
+  .galaxy-section {
+    padding-top: 75px;
+    padding-bottom: 45px;
+  }
+  .galaxy-heading h2 {
+    font-size: 38px;
+    letter-spacing: -1.8px;
+  }
+  .galaxy-heading p {
+    font-size: 12px;
+    max-width: 290px;
+    margin-inline: auto;
+  }
+  .galaxy-observation {
+    height: 420px;
+    margin-inline: -25px;
+    margin-top: 15px;
+  }
+  .galaxy-visual {
+    inset: 0;
+  }
+  .galaxy-coordinate {
+    top: 8px;
+    left: 25px;
+    font-size: 7px;
+  }
+  .galaxy-coordinate span {
+    font-size: 6px;
+  }
+  .galaxy-reticle {
+    display: none;
+  }
+  .galaxy-note {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    margin-top: 25px;
+  }
+  .galaxy-note .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .cosmic-dust i:nth-child(n + 23) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-dust i,
+  .meteor-field i {
+    animation: none;
+  }
+  .meteor-field {
+    display: none;
+  }
+}
